@@ -1,6 +1,7 @@
 package com.example.employee_directory.service;
 
 import com.example.employee_directory.model.Employee;
+import com.example.employee_directory.model.dto.EmployeeDTO;
 import com.example.employee_directory.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,24 @@ public class EmployeeService {
                     return employeeRepository.save(employee);
                 })
                 .orElseThrow(() -> new RuntimeException("Employee not found."));
+    }
+
+    // Mappers
+    private EmployeeDTO convertToDTO(Employee employee){
+        return new EmployeeDTO(
+                employee.getId(),
+                employee.getName(),
+                employee.getDepartment(),
+                employee.getEmail()
+        );
+    }
+
+    private Employee convertToEntity(EmployeeDTO employeeDTO){
+        Employee employee = new Employee();
+        employee.setName(employeeDTO.name());
+        employee.setEmail(employeeDTO.email());
+        employee.setDepartment(employeeDTO.department());
+        return employee;
     }
 
 }
