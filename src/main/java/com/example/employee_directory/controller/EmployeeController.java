@@ -3,6 +3,7 @@ package com.example.employee_directory.controller;
 
 import com.example.employee_directory.model.Employee;
 import com.example.employee_directory.repository.EmployeeRepository;
+import com.example.employee_directory.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,44 +13,35 @@ import java.util.List;
 @RequestMapping("/api/employees") // --> All the URLs will start with /employees
 public class EmployeeController {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
     // Constructor Injection
-    public EmployeeController(EmployeeRepository employeeRepository){
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService){
+        this.employeeService = employeeService;
     }
 
     @GetMapping("")
     public List<Employee> getEmployees(){
-        return employeeRepository.findAll();
+        return employeeService.getEmployees();
     }
 
     @PostMapping("")
     public Employee addEmployee(@RequestBody Employee employee){
-        return employeeRepository.save(employee);
+        return employeeService.createEmployee(employee);
     }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Long id){
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found."));
+        return employeeService.getEmployeeById(id);
     }
 
     @DeleteMapping("/{id}")
     public void deleteEmployee(@PathVariable Long id){
-        employeeRepository.deleteById(id);
+        employeeService.deleteEmployee(id);
     }
 
     @PutMapping("/{id}")
-    public void updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee){
-        employeeRepository.findById(id)
-                .map(employee -> {
-                    employee.setName(updatedEmployee.getName());
-                    employee.setDepartment(updatedEmployee.getDepartment());
-                    employee.setEmail(updatedEmployee.getEmail());
-                    return employeeRepository.save(employee);
-                })
-                .orElseThrow(() -> new RuntimeException("Employee not found."));
+    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee){
+       return employeeService.updateEmployee(id,updatedEmployee);
     }
-
 }
