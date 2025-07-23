@@ -17,19 +17,24 @@ public class EmployeeService {
     }
 
     // Get all employees
-    public List<Employee> getEmployees(){
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getEmployees(){
+        return employeeRepository.findAll()
+                .stream().map(this::convertToDTO)
+                .toList();
     }
 
     // Get employee by id
-    public Employee getEmployeeById(Long id){
+    public EmployeeDTO getEmployeeById(Long id){
         return employeeRepository.findById(id)
+                .map(this::convertToDTO)
                 .orElseThrow(() -> new RuntimeException("Employee not found."));
     }
 
     // Create employee
-    public Employee createEmployee(Employee employee){
-        return employeeRepository.save(employee);
+    public EmployeeDTO createEmployee(EmployeeDTO employeeDTO){
+        Employee employee = convertToEntity(employeeDTO);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return convertToDTO(savedEmployee);
     }
 
     // Delete employee
@@ -38,13 +43,14 @@ public class EmployeeService {
     }
 
     // Update employee
-    public Employee updateEmployee(Long id, Employee updatedEmployee){
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO updatedEmployee){
        return employeeRepository.findById(id)
                 .map(employee -> {
-                    employee.setEmail(updatedEmployee.getEmail());
-                    employee.setName(updatedEmployee.getName());
-                    employee.setDepartment(updatedEmployee.getDepartment());
-                    return employeeRepository.save(employee);
+                    employee.setEmail(updatedEmployee.email());
+                    employee.setName(updatedEmployee.name());
+                    employee.setDepartment(updatedEmployee.department());
+                    Employee savedEmployee = employeeRepository.save(employee);
+                    return convertToDTO(savedEmployee);
                 })
                 .orElseThrow(() -> new RuntimeException("Employee not found."));
     }

@@ -1,8 +1,7 @@
 package com.example.employee_directory.controller;
 
 
-import com.example.employee_directory.model.Employee;
-import com.example.employee_directory.repository.EmployeeRepository;
+import com.example.employee_directory.model.dto.EmployeeDTO;
 import com.example.employee_directory.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,17 +20,17 @@ public class EmployeeController {
     }
 
     @GetMapping("")
-    public List<Employee> getEmployees(){
+    public List<EmployeeDTO> getEmployees(){
         return employeeService.getEmployees();
     }
 
     @PostMapping("")
-    public Employee addEmployee(@RequestBody Employee employee){
+    public EmployeeDTO addEmployee(@RequestBody EmployeeDTO employee){
         return employeeService.createEmployee(employee);
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Long id){
+    public EmployeeDTO getEmployeeById(@PathVariable Long id){
         return employeeService.getEmployeeById(id);
     }
 
@@ -41,7 +40,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee){
+    public EmployeeDTO updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO updatedEmployee){
        return employeeService.updateEmployee(id,updatedEmployee);
     }
 }

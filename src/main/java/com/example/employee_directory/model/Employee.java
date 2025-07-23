@@ -1,9 +1,8 @@
 package com.example.employee_directory.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.Date;
 
 
 @Entity // --> Tells Spring Data JPA to create a table
@@ -15,16 +14,31 @@ public class Employee {
     private String department;
     private String email;
 
+    private String internalNotes;
+    private Double salary;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
     // Required by JPA and Spring to instantiate the object when fetching from the DB
     public Employee(){
 
     }
 
     // Helpful for creating new employees easily in code
-    public Employee(String name, String department, String email) {
+    public Employee(String name, String department, String email,
+                    String internalNotes, Double salary,
+                    Date createdAt, Date updatedAt) {
         this.name = name;
         this.department = department;
         this.email = email;
+        this.internalNotes = internalNotes;
+        this.salary = salary;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -53,5 +67,33 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public String getInternalNotes() {
+        return internalNotes;
+    }
+    public void setInternalNotes(String internalNotes) {
+        this.internalNotes = internalNotes;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+
+    }
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
