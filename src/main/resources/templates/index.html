@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Company Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #007bff, #6610f2);
+            color: #fff;
+            min-height: 100vh;
+        }
+        .card {
+            border: none;
+            border-radius: 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .card a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Welcome to the Company Dashboard</h1>
+        <p class="lead">Manage your Employees and Departments easily</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+            <div class="card text-center p-4">
+                <h2 class="mb-3">Employees</h2>
+                <p>View, create, and edit employee records</p>
+                <a href="/employees" class="btn btn-dark mt-2">Go to Employees</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center p-4">
+                <h2 class="mb-3">Departments</h2>
+                <p>Manage department details and teams</p>
+                <a href="/departments" class="btn btn-dark mt-2">Go to Departments</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

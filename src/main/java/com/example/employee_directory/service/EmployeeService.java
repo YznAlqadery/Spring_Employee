@@ -7,6 +7,7 @@ import com.example.employee_directory.repository.DepartmentRepository;
 import com.example.employee_directory.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,21 +49,30 @@ public class EmployeeService {
     }
 
     // Update employee
-    public EmployeeDTO updateEmployee(Long id, EmployeeDTO updatedEmployee){
-       return employeeRepository.findById(id)
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO updatedEmployee) {
+        return employeeRepository.findById(id)
                 .map(employee -> {
                     employee.setEmail(updatedEmployee.email());
                     employee.setName(updatedEmployee.name());
-                    if(updatedEmployee.departmentId() != null){
+
+                    if (updatedEmployee.departmentId() != null) {
                         Department department = departmentRepository.findById(updatedEmployee.departmentId())
                                 .orElseThrow(() -> new RuntimeException("Department not found"));
                         employee.setDepartment(department);
+                    } else {
+                        employee.setDepartment(null);
                     }
+
+                    employee.setInternalNotes(updatedEmployee.internalNotes());
+                    employee.setSalary(updatedEmployee.salary());
+                    employee.setUpdatedAt(new Date());
+
                     Employee savedEmployee = employeeRepository.save(employee);
                     return convertToDTO(savedEmployee);
                 })
                 .orElseThrow(() -> new RuntimeException("Employee not found."));
     }
+
 
     // Mappers
     private EmployeeDTO convertToDTO(Employee employee){
@@ -70,7 +80,9 @@ public class EmployeeService {
                 employee.getId(),
                 employee.getName(),
                 employee.getEmail(),
-                employee.getDepartment() != null? employee.getDepartment().getId() : null
+                employee.getDepartment() != null ? employee.getDepartment().getId() : null,
+                employee.getInternalNotes(),
+                employee.getSalary()
         );
     }
 
@@ -79,14 +91,24 @@ public class EmployeeService {
         employee.setName(employeeDTO.name());
         employee.setEmail(employeeDTO.email());
 
-        if(employeeDTO.departmentId() != null){
+        if (employeeDTO.departmentId() != null) {
             Department department = departmentRepository.findById(employeeDTO.departmentId())
-                    .orElseThrow(() -> new RuntimeException("Department not found."));
-
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid department ID"));
             employee.setDepartment(department);
+        } else {
+            employee.setDepartment(null);
         }
 
+        employee.setInternalNotes(employeeDTO.internalNotes());
+        employee.setSalary(employeeDTO.salary());
+
+        // Set timestamps
+        Date now = new Date();
+        employee.setCreatedAt(now);
+        employee.setUpdatedAt(now);
+
         return employee;
+
     }
 
 }
