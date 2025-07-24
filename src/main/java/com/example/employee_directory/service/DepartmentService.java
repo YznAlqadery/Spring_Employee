@@ -42,7 +42,6 @@ public class DepartmentService {
         return departmentRepository.findById(id)
                 .map((department -> {
                     department.setName(updatedDepartment.name());
-                    department.setEmployees(updatedDepartment.employees());
                     Department savedDepartment = departmentRepository.save(department);
                     return  convertToDTO(savedDepartment);
                 }))
@@ -52,15 +51,14 @@ public class DepartmentService {
     // Mappers
     private DepartmentDTO convertToDTO(Department department){
         return new DepartmentDTO(
-                department.getName(),
-                department.getEmployees()
+                department.getId(),
+                department.getName()
         );
     }
 
     private Department convertToEntity(DepartmentDTO departmentDTO){
         Department department = new Department();
         department.setName(departmentDTO.name());
-        department.setEmployees(departmentDTO.employees());
         return department;
     }
 }

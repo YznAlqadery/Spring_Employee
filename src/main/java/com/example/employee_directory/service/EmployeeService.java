@@ -66,6 +66,7 @@ public class EmployeeService {
     // Mappers
     private EmployeeDTO convertToDTO(Employee employee){
         return new EmployeeDTO(
+                employee.getId(),
                 employee.getName(),
                 employee.getDepartment() != null? employee.getDepartment().getId() : null,
                 employee.getEmail()
