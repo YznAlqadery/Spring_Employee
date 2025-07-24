@@ -8,4 +8,6 @@ public record EmployeeDTO(
         String departmentName,
         String internalNotes,
         Double salary
-) {}
+) {
+
+}

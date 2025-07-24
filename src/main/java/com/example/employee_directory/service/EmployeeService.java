@@ -40,6 +40,12 @@ public class EmployeeService {
     // Create employee
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO){
         Employee employee = convertToEntity(employeeDTO);
+        Department department = departmentRepository.findById(employeeDTO.departmentId())
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+
+        employee.setDepartment(department);
+
+        employee.setDepartment(department);
         Employee savedEmployee = employeeRepository.save(employee);
         return convertToDTO(savedEmployee);
     }
@@ -82,7 +88,7 @@ public class EmployeeService {
                 employee.getName(),
                 employee.getEmail(),
                 employee.getDepartment() != null ? employee.getDepartment().getId() : null,
-                employee.getDepartment().getName(),
+                employee.getDepartment() != null ? employee.getDepartment().getName() : null,
                 employee.getInternalNotes(),
                 employee.getSalary()
         );

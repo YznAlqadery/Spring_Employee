@@ -1,12 +1,16 @@
 package com.example.employee_directory.controller;
 
 
+import com.example.employee_directory.model.Department;
+import com.example.employee_directory.model.Employee;
 import com.example.employee_directory.model.dto.EmployeeDTO;
 import com.example.employee_directory.service.DepartmentService;
 import com.example.employee_directory.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,10 +38,59 @@ public class EmployeeController {
         return "employees/index";
     }
 
-    @PostMapping("")
-    public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employee){
-        EmployeeDTO createdEmployee = employeeService.createEmployee(employee);
-        return ResponseEntity.status(201).body(createdEmployee);
+//    @PostMapping("")
+//    public ResponseEntity<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employee){
+//        EmployeeDTO createdEmployee = employeeService.createEmployee(employee);
+//        return ResponseEntity.status(201).body(createdEmployee);
+//    }
+
+
+    @GetMapping("/create")
+    public String createEmployee(Model model){
+       model.addAttribute("employeeDTO", new EmployeeDTO(0L,"","",0L,"","",0.0));
+       model.addAttribute("departments",departmentService.getDepartments());
+       return "employees/create";
+    }
+
+    @PostMapping("/create")
+    public String createEmployee(
+            @Valid @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO,
+            BindingResult bindingResult,
+            Model model
+    ){
+        if(bindingResult.hasErrors()){
+            return "employee/create";
+        }
+
+        employeeService.createEmployee(employeeDTO);
+
+        return "redirect:/employees";
+
+    }
+
+    @GetMapping("/edit")
+    public String editEmployee(Model model, @RequestParam Long id){
+        EmployeeDTO employeeDTO  = employeeService.getEmployeeById(id);
+
+        model.addAttribute("employeeDTO",employeeDTO);
+        model.addAttribute("departments",departmentService.getDepartments());
+        return "employees/edit";
+    }
+
+    @PostMapping("/edit")
+    public String editEmployee(
+            @RequestParam Long id,
+            @Valid @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO,
+            BindingResult bindingResult
+    ){
+        if (bindingResult.hasErrors()){
+            return "employees/edit";
+        }
+
+        employeeService.updateEmployee(id,employeeDTO);
+
+        return "redirect:/employees";
+
     }
 
     @GetMapping("/{id}")
@@ -57,4 +110,6 @@ public class EmployeeController {
         EmployeeDTO updated = employeeService.updateEmployee(id, updatedEmployee);
         return ResponseEntity.ok(updated);
     }
+
+
 }

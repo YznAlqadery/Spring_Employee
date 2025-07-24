@@ -28,6 +28,9 @@ public class DepartmentService {
                 .orElseThrow(() -> new RuntimeException("Department not found."));
     }
 
+
+
+
     public DepartmentDTO createDepartment(DepartmentDTO departmentDTO){
         Department department = convertToEntity(departmentDTO);
         Department savedDepartment = departmentRepository.save(department);
@@ -58,7 +61,9 @@ public class DepartmentService {
 
     private Department convertToEntity(DepartmentDTO departmentDTO){
         Department department = new Department();
+        department.setId(departmentDTO.id());
         department.setName(departmentDTO.name());
         return department;
     }
+
 }
