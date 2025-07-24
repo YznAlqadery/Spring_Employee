@@ -93,17 +93,23 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/delete")
+    public String deleteEmployee(@RequestParam Long id){
+        employeeService.deleteEmployee(id);
+        return "redirect:/employees";
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id){
         EmployeeDTO employee = employeeService.getEmployeeById(id);
         return ResponseEntity.ok(employee);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id){
-        employeeService.deleteEmployee(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id){
+//        employeeService.deleteEmployee(id);
+//        return ResponseEntity.noContent().build();
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO updatedEmployee){

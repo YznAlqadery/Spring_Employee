@@ -38,6 +38,9 @@
                 <td>
                     <a th:href="@{'/employees/edit?id=' + ${emp.id}}"
                        class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <a th:href="@{/employees/delete(id=${emp.id})}"
+                       class="btn btn-sm btn-danger"
+                    >Delete</a>
                 </td>
             </tr>
             </tbody>
