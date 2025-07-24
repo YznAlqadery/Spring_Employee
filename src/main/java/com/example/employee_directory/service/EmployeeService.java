@@ -1,7 +1,9 @@
 package com.example.employee_directory.service;
 
+import com.example.employee_directory.model.Department;
 import com.example.employee_directory.model.Employee;
 import com.example.employee_directory.model.dto.EmployeeDTO;
+import com.example.employee_directory.repository.DepartmentRepository;
 import com.example.employee_directory.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository){
+    public EmployeeService(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository){
         this.employeeRepository = employeeRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     // Get all employees
@@ -48,7 +52,11 @@ public class EmployeeService {
                 .map(employee -> {
                     employee.setEmail(updatedEmployee.email());
                     employee.setName(updatedEmployee.name());
-                    employee.setDepartment(updatedEmployee.department());
+                    if(updatedEmployee.departmentId() != null){
+                        Department department = departmentRepository.findById(updatedEmployee.departmentId())
+                                .orElseThrow(() -> new RuntimeException("Department not found"));
+                        employee.setDepartment(department);
+                    }
                     Employee savedEmployee = employeeRepository.save(employee);
                     return convertToDTO(savedEmployee);
                 })
@@ -58,9 +66,8 @@ public class EmployeeService {
     // Mappers
     private EmployeeDTO convertToDTO(Employee employee){
         return new EmployeeDTO(
-                employee.getId(),
                 employee.getName(),
-                employee.getDepartment(),
+                employee.getDepartment() != null? employee.getDepartment().getId() : null,
                 employee.getEmail()
         );
     }
@@ -69,7 +76,14 @@ public class EmployeeService {
         Employee employee = new Employee();
         employee.setName(employeeDTO.name());
         employee.setEmail(employeeDTO.email());
-        employee.setDepartment(employeeDTO.department());
+
+        if(employeeDTO.departmentId() != null){
+            Department department = departmentRepository.findById(employeeDTO.departmentId())
+                    .orElseThrow(() -> new RuntimeException("Department not found."));
+
+            employee.setDepartment(department);
+        }
+
         return employee;
     }
 

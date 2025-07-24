@@ -11,7 +11,10 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // --> Automatically generates primary keys
     private Long id;
     private String name;
-    private String department;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
     private String email;
 
     private String internalNotes;
@@ -29,7 +32,7 @@ public class Employee {
     }
 
     // Helpful for creating new employees easily in code
-    public Employee(String name, String department, String email,
+    public Employee(String name, Department department, String email,
                     String internalNotes, Double salary,
                     Date createdAt, Date updatedAt) {
         this.name = name;
@@ -53,11 +56,11 @@ public class Employee {
         this.name = name;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 
