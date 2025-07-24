@@ -2,28 +2,36 @@ package com.example.employee_directory.controller;
 
 
 import com.example.employee_directory.model.dto.EmployeeDTO;
+import com.example.employee_directory.service.DepartmentService;
 import com.example.employee_directory.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@RestController // --> Tells Spring to handle HTTP requests
-@RequestMapping("/api/employees") // --> All the URLs will start with /api/employees
+//@RestController // --> Tells Spring to handle HTTP requests
+//@RequestMapping("/api/employees") // --> All the URLs will start with /api/employees
+@Controller
+@RequestMapping("/employees")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final DepartmentService departmentService;
 
     // Constructor Injection
-    public EmployeeController(EmployeeService employeeService){
+    public EmployeeController(EmployeeService employeeService, DepartmentService departmentService){
         this.employeeService = employeeService;
+        this.departmentService = departmentService;
     }
 
     @GetMapping("")
-    public ResponseEntity<List<EmployeeDTO>> getEmployees(){
+    public String getEmployees(Model model){
         List<EmployeeDTO> employees  = employeeService.getEmployees();
-        return ResponseEntity.ok(employees);
+        model.addAttribute("employees",employees);
+        return "employees/index";
     }
 
     @PostMapping("")

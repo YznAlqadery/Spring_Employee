@@ -5,6 +5,7 @@ public record EmployeeDTO(
         String name,
         String email,
         Long departmentId,
+        String departmentName,
         String internalNotes,
         Double salary
 ) {}

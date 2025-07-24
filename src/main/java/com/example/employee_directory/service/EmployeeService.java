@@ -5,6 +5,7 @@ import com.example.employee_directory.model.Employee;
 import com.example.employee_directory.model.dto.EmployeeDTO;
 import com.example.employee_directory.repository.DepartmentRepository;
 import com.example.employee_directory.repository.EmployeeRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,7 +25,7 @@ public class EmployeeService {
 
     // Get all employees
     public List<EmployeeDTO> getEmployees(){
-        return employeeRepository.findAll()
+        return employeeRepository.findAll(Sort.by(Sort.Direction.DESC,"id"))
                 .stream().map(this::convertToDTO)
                 .toList();
     }
@@ -81,6 +82,7 @@ public class EmployeeService {
                 employee.getName(),
                 employee.getEmail(),
                 employee.getDepartment() != null ? employee.getDepartment().getId() : null,
+                employee.getDepartment().getName(),
                 employee.getInternalNotes(),
                 employee.getSalary()
         );
