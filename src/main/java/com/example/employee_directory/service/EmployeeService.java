@@ -15,6 +15,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
 
+    // Constructor injection
     public EmployeeService(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository){
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
@@ -68,8 +69,8 @@ public class EmployeeService {
         return new EmployeeDTO(
                 employee.getId(),
                 employee.getName(),
-                employee.getDepartment() != null? employee.getDepartment().getId() : null,
-                employee.getEmail()
+                employee.getEmail(),
+                employee.getDepartment() != null? employee.getDepartment().getId() : null
         );
     }
 

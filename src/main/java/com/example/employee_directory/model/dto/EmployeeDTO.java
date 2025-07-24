@@ -1,4 +1,4 @@
 package com.example.employee_directory.model.dto;
 
-public record EmployeeDTO(Long id, String name, Long departmentId, String email) {
+public record EmployeeDTO(Long id, String name, String email, Long departmentId) {
 }
