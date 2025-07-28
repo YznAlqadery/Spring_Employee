@@ -1,8 +1,6 @@
 package com.example.employee_directory.controller;
 
 
-import com.example.employee_directory.model.Department;
-import com.example.employee_directory.model.Employee;
 import com.example.employee_directory.model.dto.EmployeeDTO;
 import com.example.employee_directory.service.DepartmentService;
 import com.example.employee_directory.service.EmployeeService;

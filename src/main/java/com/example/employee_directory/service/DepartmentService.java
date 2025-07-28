@@ -2,6 +2,7 @@ package com.example.employee_directory.service;
 
 import com.example.employee_directory.model.Department;
 import com.example.employee_directory.model.dto.DepartmentDTO;
+import com.example.employee_directory.model.dto.EmployeeDTO;
 import com.example.employee_directory.repository.DepartmentRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,6 @@ public class DepartmentService {
     }
 
 
-
-
     public DepartmentDTO createDepartment(DepartmentDTO departmentDTO){
         Department department = convertToEntity(departmentDTO);
         Department savedDepartment = departmentRepository.save(department);
@@ -55,7 +54,10 @@ public class DepartmentService {
     private DepartmentDTO convertToDTO(Department department){
         return new DepartmentDTO(
                 department.getId(),
-                department.getName()
+                department.getName(),
+                department.getEmployees() == null ? List.of(): department.getEmployees().stream().map(emp -> new EmployeeDTO(
+                        emp.getId(), emp.getName(),emp.getEmail() , emp.getDepartment().getId(),emp.getDepartment().getName(),emp.getInternalNotes(), emp.getSalary()
+                )).toList()
         );
     }
 

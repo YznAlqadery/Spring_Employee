@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Department Details</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            crossorigin="anonymous"
+    >
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4">Department Details</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <p class="card-title">
+                <strong>Department Name:</strong>
+                <span th:text="${department.name}"></span>
+            </p>
+            <p class="card-text"><strong>Department ID:</strong> <span th:text="${department.id}">1</span></p>
+        </div>
+    </div>
+
+    <h4 class="mb-3">Employees</h4>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th class="text-center">#ID</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">Salary</th>
+                <th class="text-center">Notes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="emp : ${department.employees}">
+                <td class="text-center" th:text="${emp.id}"></td>
+                <td class="text-center" th:text="${emp.name}"></td>
+                <td class="text-center" th:text="${emp.email}"></td>
+                <td class="text-center" th:text="${emp.salary}"></td>
+                <td class="text-center" th:text="${emp.internalNotes}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(department.employees)}">
+                <td colspan="5" class="text-center">No employees found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/departments" class="btn btn-secondary mt-3">← Back to Departments</a>
+</div>
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous">
+</script>
+</body>
+</html>
